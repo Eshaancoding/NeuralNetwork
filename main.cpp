@@ -53,12 +53,13 @@ int main () {
     cout<<"training..."<<endl;
     NeuralNetwork net ({1024,15,10}, 0.7);
     for (int epochs = 0; epochs < 30; epochs++) {
-        for (int i = 50; i < input.size(); i++) {
+        for (int i = 50; i < input.size(); i++) { // LABEL 1!!!
             net.backprop(input[i], output[i]);
         }
         cout<<epochs<<endl; 
     }
-    // if you get in the 30's. that's okay! Remember that the training data is only 1,000 images. The real dataset is 60,000 iamges.
+    // if you get in the 20's-30's. that's okay! Remember that the training data is only 1,000 images. The real dataset is 60,000 iamges.
+    // Look at label 1, try to change the starting value of i to zero. Then it will be better because the neural network has seen the images.  
     cout<<"testing..."<<endl; 
     int correct = 0;
     for (int i = 0; i < 50; i++) {
