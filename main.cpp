@@ -54,7 +54,8 @@ int main () {
     NeuralNetwork net ({1024,15,10}, 0.7);
     for (int epochs = 0; epochs < 30; epochs++) {
         for (int i = 50; i < input.size(); i++) { // LABEL 1!!!
-            net.backprop(input[i], output[i]);
+            int x = rand() % input.size(); 
+            net.backprop(input[x], output[x]);
         }
         cout<<epochs<<endl; 
     }
