@@ -9,7 +9,7 @@ Then type in c++ -std=c++11 main.cpp -o main && ./main && rm main.
 
 At the end, it would give out the output of the prediction of an image (not trained) and the actual answer. 
 
-WARNING: The Neural Network is slow. All I wanted to do is setup the basics of Neural Network.
+WARNING: The Neural Network is slow. All I wanted to do is write the basics of Neural Network. I will worry about efficently later.
 
 Testing the Neural Network Vid: 
 https://www.youtube.com/watch?v=hnMD7hf638U
