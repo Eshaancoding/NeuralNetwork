@@ -14,5 +14,5 @@ WARNING: The Neural Network is slow. All I wanted to do is understand the basics
 Testing the Neural Network Vid: 
 https://www.youtube.com/watch?v=hnMD7hf638U
 
-3blue1Brown neural network series: (Good resource for implementing Neural Networks from scratch)
+3blue1Brown neural network series: (Good resource for understanding Neural Networks from scratch)
 https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
