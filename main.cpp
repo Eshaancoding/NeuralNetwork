@@ -4,7 +4,7 @@
 //
 //  Created by Eshaan Arnav on 7/2/20.
 //  Copyright © 2020 Eshaan. All rights reserved.
-//
+// cahnge 
 #include "NeuralNetwork.cpp"
 #include "ExtractMNIST.cpp"
 #include <stdio.h>
