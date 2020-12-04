@@ -1,9 +1,12 @@
-# NeuralNetwork
-Neural Network in c++
+# NeuralNetwork in C++
+## Libraries
 
-You may notice that this is different from the last version; I made a new one that is more efficent.
-3blue1brown Neural Network series helped me
+The only library I used is ncurses. This library is not really necessary for anything machine learning; it's just a great way to print values into terminal.
 
-Make sure to compile it with ncurses, I use that library for printing. 
+## Executing
+- Download the MNIST dataset from kaggle: https://www.kaggle.com/darkgeekms/text-file-for-mnist-dataset/data
+- Place the MNIST dataset into this directory
+- type `make`
 
+## Email
 Any questions contact me: eshaanbarkataki@gmail.com
