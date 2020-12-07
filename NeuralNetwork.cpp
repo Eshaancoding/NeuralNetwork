@@ -6,36 +6,35 @@
 //  Copyright © 2020 Eshaan. All rights reserved.
 //
 
-#include "NeuralNet.hpp"
+#include "NeuralNetwork.hpp"
 
 Layer :: Layer(int starting_node, int ending_node, double lr) {
     this->lr = lr;
     this->ending_node = ending_node;
     this->starting_node = starting_node;
-    // init weight
-    weights = (double*)malloc(sizeof(double) * ending_node * starting_node);
+	// random num    
+	srand(time(NULL));
+	// init weight
+    this->weights = (double*)malloc(sizeof(double) * ending_node * starting_node);
     for (int i = 0; i < ending_node * starting_node; i++) {
-        double random_num = (rand() % 1000000) / double(1000000);
-        if (rand() % 2 == 1) random_num = -random_num;
+        double random_num = (rand() % 1000000) / double(1000000) - 0.5;
         weights[i] = random_num;
     }
     // init bias
-    bias = (double*)malloc(sizeof(double) * ending_node);
+    this->bias = (double*)malloc(sizeof(double) * ending_node);
     for (int i = 0; i < ending_node; i++) {
-        double random_num = (rand() % 1000000) / double(1000000);
-        if (rand() % 2 == 1) random_num = -random_num;
+        double random_num = (rand() % 1000000) / double(1000000) - 0.5;
         bias[i] = random_num;
     }
-    // random num
-    srand(time(NULL));
-}
+} 
+
 double Layer :: sigmoid (double x) {
     return 1 / (1 + pow(this->e, -x));
 }
 
 vector<double> Layer :: predict (vector<double> input) {
     if (input.size() != this->starting_node) {
-        throw invalid_argument("Input size not equal to input array");
+        throw invalid_argument("Input size not equal to input array. Expected " + to_string(this->starting_node) + " but got: " + to_string(input.size()));
     }
     
     vector<double> output;
@@ -46,10 +45,7 @@ vector<double> Layer :: predict (vector<double> input) {
     // weight
     for (int x = 0; x < this->ending_node; x++) {
         for (int i = 0; i < this->starting_node; i++) {
-            if (this->ending_node < this->starting_node) output[x] += input[i] * weights[(x * ending_node) + i];
-            else if (this->ending_node > this->starting_node) output[x] += input[i] * weights[(i * starting_node) + x];
-            else output[x] += input[i] * weights[(x * ending_node) + i];
-            // why do we need this...
+            output[x] += input[i] * weights[(i * this->ending_node) + x];
         }
     }
     // bias & sigmoid
@@ -61,7 +57,7 @@ vector<double> Layer :: predict (vector<double> input) {
 }
 
 
-vector<double> Layer :: backprop(vector<double> inputs, vector<double> outputs, vector<double> target, bool MSE = true) {
+vector<double> Layer :: backprop(vector<double> inputs, vector<double> outputs, vector<double> target) {
     vector<double> return_array;
     if (inputs.size() != this->starting_node) throw invalid_argument("input size not valid");
     if (outputs.size() != this->ending_node) throw invalid_argument("output size not valid");
@@ -75,31 +71,23 @@ vector<double> Layer :: backprop(vector<double> inputs, vector<double> outputs, 
         for (int i = 0; i < this->starting_node; i++) {
             double input = inputs[i];
             
-            double dir_w = input * output * (1 - output);
-            if (MSE) dir_w *= 2 * (output - target[x]); // this is the derivative of our cost
-            else dir_w *= target[x]; // target is the derivative of any cost at each output
+			// derivative of the weights 
+            double dir_w = input * output * (1 - output) * target[x];
+            // applying dir to weights
+            weights[(i * this->ending_node) + x] -= this->lr * dir_w;
             
-            if (this->ending_node < this->starting_node) weights[(x * this->ending_node) + i] -= this->lr * dir_w;
-            else if (this->ending_node > this->starting_node) weights[(i * this->starting_node) + x] -= this->lr * dir_w;
-            else weights[(i * this->starting_node) + x] -= this->lr * dir_w;
-            
-            double dir_a_l_1 = output * (1 - output);
-            
-            if (this->ending_node < this->starting_node) dir_a_l_1 *= weights[(x * this->ending_node) + i];
-            else if (this->ending_node > this->starting_node) dir_a_l_1 *= weights[(i * this->starting_node) + x];
-            else dir_a_l_1 *= weights[(x * this->ending_node) + i];
-            
-            if (MSE) dir_a_l_1 *= 2 * (output - target[x]); // this is the derivative of our cost
-            else dir_a_l_1 *= target[x]; // target is the derivative of any cost at each output
-            
+			// derivative of "first layer" (the derivative to be passed down to the next layer)
+            double dir_a_l_1 = output * (1 - output) * target[x];
+			// multiply by weights
+            dir_a_l_1 *= weights[(i * this->ending_node) + x];
+			// accumulate the derivative
             return_array[i] += dir_a_l_1;
         }
-        
-        double dir_b = output * (1 - output);
-        if (MSE) dir_b *= 2 * (output - target[x]); // this is the derivative of our cost
-        else dir_b *= target[x]; // target is the derivative of any cost at each output
-        
-        bias[x] -= this->lr * dir_b;
+
+        // derivative of the bias
+        double dir_b = output * (1 - output) * target[x]; 
+        // apply der to bias 
+		bias[x] -= this->lr * dir_b;
     }
     return return_array;
 }
@@ -118,14 +106,14 @@ NeuralNet :: NeuralNet(vector<int> layout, double lr) {
     // init layers
     for (int i = 0; i < this->layout_size - 1; i++) {
         layers[i] = Layer(layout[i], layout[i+1], this->lr);
-    }
+	}
     if (this->layout_size == 0) throw invalid_argument("layout size 0");
 }
 
 vector<double> NeuralNet :: predict (vector<double> input) {
     vector<double> return_array = input;
-    for (int i = 0; i < this->layout_size; i++) {
-        return_array = this->layers[i].predict(return_array);
+    for (int i = 0; i < this->layout_size - 1; i++) {
+		return_array = this->layers[i].predict(return_array);
     }
     return return_array;
 }
@@ -154,8 +142,15 @@ vector<double> NeuralNet:: square (vector<double> arrayOne) {
     return return_array;
 }
 
-double NeuralNet:: backprop_mse(vector<double> input, vector<double> expected_output) {
-    vector<double> error = expected_output;
+vector<double> NeuralNet:: multiply (vector<double> arrayOne, double two) {
+	vector<double> return_arr; 
+	for (int i = 0; i < arrayOne.size(); i++) {
+		return_arr.push_back(arrayOne[i] * two);
+	}
+	return return_arr;
+}
+
+double NeuralNet:: backprop_mse(vector<double> input, vector<double> expected_output) {    
     vector<double> final_prediction = input;
     vector<vector<double>> prediction_array;
     prediction_array.push_back(input);
@@ -163,26 +158,10 @@ double NeuralNet:: backprop_mse(vector<double> input, vector<double> expected_ou
         final_prediction = this->layers[i].predict(final_prediction);
         prediction_array.push_back(final_prediction);
     }
-    
+	// init error: last_layer_pred - target_val
+	vector<double> error = multiply(subtract(final_prediction, expected_output),2);
     for (int i = this->layout_size - 2; i > -1; i--) {
-        error = this->layers[i].backprop(prediction_array[i], prediction_array[i+1], error, true);
+        error = this->layers[i].backprop(prediction_array[i], prediction_array[i+1], error);
     }
     return mean(square(subtract(final_prediction, expected_output)));
 }
-
-
-void NeuralNet:: backprop_dir_loss(vector<double> input, vector<double> dir_loss) {
-    vector<double> error = dir_loss;
-    vector<double> final_prediction = input;
-    vector<vector<double>> prediction_array;
-    prediction_array.push_back(input);
-    for (int i = 0; i < this->layout_size; i++) {
-        final_prediction = this->layers[i+1].predict(final_prediction);
-        prediction_array.push_back(final_prediction);
-    }
-    
-    for (int i = this->layout_size - 1; i > -1; i++) {
-        error = this->layers[i].backprop(prediction_array[i], prediction_array[i+1], error, false);
-    }
-}
-

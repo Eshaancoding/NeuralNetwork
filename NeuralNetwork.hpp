@@ -6,8 +6,8 @@
 //  Copyright © 2020 Eshaan. All rights reserved.
 //
 
-#ifndef NeuralNet_hpp
-#define NeuralNet_hpp
+#ifndef NeuralNetwork_hpp
+#define NeuralNetwork_hpp
 
 #include <stdio.h>
 #include <vector>
@@ -29,7 +29,7 @@ public:
 
     Layer (int starting_node, int ending_node, double lr);
     vector<double> predict (vector<double> input);
-    vector<double> backprop(vector<double> inputs, vector<double> outputs, vector<double> target, bool MSE); // not sure when MSE is false...
+    vector<double> backprop(vector<double> inputs, vector<double> outputs, vector<double> target); 
     
     void free_vars ();
     double sigmoid (double x);
@@ -44,10 +44,10 @@ private:
     double mean (vector<double> array);
     vector<double> subtract (vector<double> arrayOne, vector<double> arrayTwo);
     vector<double> square (vector<double> arrayOne);
+	vector<double> multiply (vector<double> arrayOne, double two);
 public:
     NeuralNet (vector<int> layout, double lr);
     vector<double> predict (vector<double> input);
     double backprop_mse(vector<double> input, vector<double> expected_output);
-    void backprop_dir_loss (vector<double> input, vector<double> dir_loss);
 };
 
