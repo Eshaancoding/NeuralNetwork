@@ -1,3 +1,3 @@
 ## TODO list
 
-- Make it as efficent as you can
+- make GPU-Accelerated Neural network class
