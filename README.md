@@ -1,6 +1,6 @@
 # Neural Network in C++
 
-## Tutorials / Test
+## Tests
 Head over to the `test` folder in order to see some examples. If you want to run the MNIST test, then you should download the MNIST dataset from kaggle:
 https://www.kaggle.com/darkgeekms/text-file-for-mnist-dataset/data
 and then put the file `Train.txt` into the main directory: `NeuralNetwork/`
