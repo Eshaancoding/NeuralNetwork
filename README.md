@@ -11,7 +11,7 @@ and then put the file `Train.txt` into the main directory: `NeuralNetwork/`
 - To run only the Simple test, simply type: `make Simple`
 - To run only the AutoEncoder test, simply type: `make AutoEncoder`
 
-## How did I make this project?
+## Resources 
 
 The 3blue1brown neural network youtube series really helped me here: https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
 
