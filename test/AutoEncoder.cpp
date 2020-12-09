@@ -54,7 +54,7 @@ int main () {
 	int random_number = rand() % dataset_len;
 	vector<double> prediction = net.predict(train[random_number]);
 	double output = calculate_score(prediction, train[random_number]);
-	if (1 - output > 0.95) {
+	if (1 - output > 0.95) {	
 		string green = "\033[1;32m";
 		string normal = "\033[0;m";
 		cout<<green<<"Autoencoder test Success!"<<normal<<" Confidence: "<<1-output<<endl;
