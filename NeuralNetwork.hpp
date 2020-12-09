@@ -46,8 +46,15 @@ private:
     vector<double> square (vector<double> arrayOne);
 	vector<double> multiply (vector<double> arrayOne, double two);
 public:
+	// class / vars initialization
     NeuralNet (vector<int> layout, double lr);
-    vector<double> predict (vector<double> input);
-    double backprop_mse(vector<double> input, vector<double> expected_output);
-};
-
+    
+	// Forward propagate
+	vector<double> predict (vector<double> input);
+	
+	// Performs stochastic gradient descent and applies the gradient to the weights
+    double backprop (vector<double> input, vector<double> expected_output);
+	
+	// If you can find the gradient of whatever function you have with respect to the output of the neural network, this function will figure out the derivative of the weights and bias and apply them  }
+	void apply_grad (vector<double> input, vector<double> grad); 
+}; 

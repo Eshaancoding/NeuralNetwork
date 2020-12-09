@@ -47,7 +47,7 @@ int main () {
 	// iteration loop!
 	for (int i = 0; i < iterations; i++) {
 		int random_number = rand() % dataset_len;
-		net.backprop_mse(train[random_number], train[random_number]); 
+		net.backprop(train[random_number], train[random_number]); 
 	}
 
 	// test
@@ -57,10 +57,10 @@ int main () {
 	if (1 - output > 0.95) {
 		string green = "\033[1;32m";
 		string normal = "\033[0;m";
-		cout<<green<<"Success!"<<normal<<" Confidence: "<<1-output<<endl;
+		cout<<green<<"Autoencoder test Success!"<<normal<<" Confidence: "<<1-output<<endl;
 	} else {
 		string red = "\033[1;31m";
 		string normal = "\033[0;m";
-		cout<<red<<"Failed!"<<normal<<" Confidence: "<<1-output<<endl;
+		cout<<red<<"Autoencoder test Failed!"<<normal<<" Confidence: "<<1-output<<endl;
 	}
 }

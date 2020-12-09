@@ -1,7 +1,10 @@
 make: 
-	@c++ -std=c++11 -I ../NeuralNetwork.hpp ../NeuralNetwork.cpp testOne.cpp -o main 
+	
+	@c++ -std=c++11 -I ../NeuralNetwork.hpp ../NeuralNetwork.cpp apply_grad.cpp -o main 
 	@./main
-	@c++ -std=c++11 -I ../NeuralNetwork.hpp ../NeuralNetwork.cpp test.cpp -o main 
+	@c++ -std=c++11 -I ../NeuralNetwork.hpp ../NeuralNetwork.cpp SimpleNN.cpp -o main 
+	@./main
+	@c++ -std=c++11 -I ../NeuralNetwork.hpp ../NeuralNetwork.cpp AutoEncoder.cpp -o main 
 	@./main
 	@rm main
 
@@ -12,4 +15,3 @@ debug:
 
 clean: 
 	@rm main 
-	@rm main.dSYM 

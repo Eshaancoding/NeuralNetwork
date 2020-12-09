@@ -150,18 +150,33 @@ vector<double> NeuralNet:: multiply (vector<double> arrayOne, double two) {
 	return return_arr;
 }
 
-double NeuralNet:: backprop_mse(vector<double> input, vector<double> expected_output) {    
+double NeuralNet:: backprop (vector<double> input, vector<double> expected_output) {    
     vector<double> final_prediction = input;
-    vector<vector<double>> prediction_array;
-    prediction_array.push_back(input);
+    vector<double> prediction_array[this->layout_size];
+    prediction_array[0] = input;
     for (int i = 0; i < this->layout_size - 1; i++) {
         final_prediction = this->layers[i].predict(final_prediction);
-        prediction_array.push_back(final_prediction);
+        prediction_array[i+1] = final_prediction; 
     }
-	// init error: last_layer_pred - target_val
+	// MSE
 	vector<double> error = multiply(subtract(final_prediction, expected_output),2);
     for (int i = this->layout_size - 2; i > -1; i--) {
         error = this->layers[i].backprop(prediction_array[i], prediction_array[i+1], error);
     }
     return mean(square(subtract(final_prediction, expected_output)));
 }
+
+// basically the same as NeuralNet::backprop except the error is the grad
+void NeuralNet:: apply_grad (vector<double> input, vector<double> grad) {
+	// forward propagate
+	vector<double> output_array[this->layout_size];
+	output_array[0] = input; 
+	for (int i = 0; i < this->layout_size - 1; i++) {
+		output_array[i+1] = this->layers[i].predict(output_array[i]);
+	}	
+	// backward propagate
+	vector<double> error = grad;
+	for (int i = this->layout_size - 2; i > -1; i--) {
+		error = this->layers[i].backprop(output_array[i], output_array[i+1], error);
+	}
+} 
