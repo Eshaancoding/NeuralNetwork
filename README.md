@@ -1,7 +1,7 @@
 # Neural Network in C++
 
-## Running the program
-- `cd` into this directory and `make`
+## Tutorials / Test
+Head over to the `tests` folder in order to see some examples. If you want to run all of these tests, `cd` into the `test` directory and simply type `make`.
 
 ## How did I make this project?
 
