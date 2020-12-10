@@ -20,3 +20,4 @@ This version only runs on the CPU (single-thread), however running a neural netw
 
 ## Email
 Any questions contact me: eshaanbarkataki@gmail.com
+Made by Eshaan Barkataki
