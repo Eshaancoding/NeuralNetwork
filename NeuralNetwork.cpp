@@ -75,7 +75,7 @@ vector<double> Layer :: backprop(vector<double> inputs, vector<double> outputs, 
             double dir_w = input * output * (1 - output) * target[x];
             // applying dir to weights
             weights[(i * this->ending_node) + x] -= this->lr * dir_w;
-            
+
 			// derivative of "first layer" (the derivative to be passed down to the next layer)
             double dir_a_l_1 = output * (1 - output) * target[x];
 			// multiply by weights

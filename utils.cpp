@@ -3,19 +3,18 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 using namespace std;
-vector<string> parse(string str,string delim){
-    vector<string> tokens;
-    char *str_c = strdup(str.c_str());
-    char* token = NULL;
 
-    token = strtok(str_c, delim.c_str());
-    while (token != NULL) {
-        tokens.push_back(std::string(token));
-        token = strtok(NULL, delim.c_str());
-    }
 
-    delete[] str_c;
+vector<string> split(string s) {
+    string buf;               
+    stringstream ss = stringstream(s);    
+
+    vector<string> tokens; 
+
+    while (ss >> buf)
+        tokens.push_back(buf);
 
     return tokens;
 }
@@ -33,7 +32,7 @@ void extractMNISTData () {
 	}
 	cout<<"Extracting Data..."<<endl;
     for (string line; getline(file, line);) {
-        vector<string> parsing = parse(line, " ");
+        vector<string> parsing = split(line);
         bool label = true;
         vector<double> label_array;
         vector<double> features_array;
